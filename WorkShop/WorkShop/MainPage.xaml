@@ -1,0 +1,81 @@
+﻿<Page
+    x:Class="WorkShop.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WorkShop"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:helpers ="using:WorkShop.Helpers"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <Style TargetType="Grid">
+            <Setter Property="Background" Value="RoyalBlue"/>
+        </Style>
+        <helpers:BoolToVisibilityConverter x:Key="boolToVisibilityConverter" />
+    </Page.Resources>
+    <Grid>
+        <StackPanel Style="{StaticResource StackPanelWithMargins6incStyle}">
+            <StackPanel.Resources>
+                <Style TargetType="Button" BasedOn="{StaticResource LogInScreenButtonStyle}"/>
+            </StackPanel.Resources>
+            <Button Content="LogIn" Command="{Binding ShowLogIn}" />
+            <Button Content="Register" Command="{Binding ShowRegistration}"/>
+            <Button Content="ShowAll" Command="{Binding ShowAll}"/>
+
+            <StackPanel Name="Registration"
+                Style="{StaticResource StackPanelWithMargins6incInnerStyle}" 
+                Visibility="{Binding DisplayRegisterForm, Converter={StaticResource boolToVisibilityConverter}}">
+                <StackPanel.Resources>
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource TexBoxLabelStyle}"/>
+                    <Style TargetType="Button" BasedOn="{StaticResource LogInScreenButtonStyle}"/>
+                    <Style TargetType="TextBox" BasedOn="{StaticResource TextBoxStyle}"/>
+                </StackPanel.Resources>
+                <TextBlock Text="UserName"/>
+                <TextBox Text="{Binding UserToBeRegistered.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock  Text="Password"/>
+                <TextBox Text="{Binding UserToBeRegistered.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Button Content="Register" Command="{Binding RegisterCommand}"/>
+                <TextBlock Name="ValidationErro" Visibility="{Binding DisplayRegistrationErr, Converter={StaticResource boolToVisibilityConverter}}" 
+                           Text="Error!TryAgain!"
+                           Style="{StaticResource ErrorMessageStyle}"/>
+
+            </StackPanel>
+
+            <StackPanel Name="Login"
+                Style="{StaticResource StackPanelWithMargins6incInnerStyle}" 
+                Visibility="{Binding DisplayLogInForm, Converter={StaticResource boolToVisibilityConverter}}">
+                <StackPanel.Resources>
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource TexBoxLabelStyle}"/>
+                    <Style TargetType="Button" BasedOn="{StaticResource LogInScreenButtonStyle}"/>
+                    <Style TargetType="TextBox" BasedOn="{StaticResource TextBoxStyle}"/>
+                </StackPanel.Resources>
+                <TextBlock Text="UserName"/>
+                <TextBox Text="{Binding UserToBeLoggedIn.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock  Text="Password"/>
+                <TextBox Text="{Binding UserToBeLoggedIn.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Button Content="Login" Command="{Binding LogInCommand}"/>
+                <TextBlock Name="LogInErr" Visibility="{Binding DisplayLogInErr, Converter={StaticResource boolToVisibilityConverter}}" 
+                           Text="User or Password Wrong!"
+                           Style="{StaticResource ErrorMessageStyle}"/>
+            </StackPanel>
+            <ListBox  Background="Transparent" x:Name="listingOfUsers" ItemsSource="{Binding Users}" Visibility="{Binding DisplayeUsers, Converter={StaticResource boolToVisibilityConverter}}">
+                <ListBox.Resources>
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource TexBoxLabelStyle}">
+                        <Setter Property="FontSize" Value="25"/>
+                    </Style>
+                    <Style TargetType="Image" x:Key="ImageStyel">
+                        <Setter Property="HorizontalAlignment" Value="Center" />
+                    </Style>
+                </ListBox.Resources>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock Text="{Binding UserName}" Style="{StaticResource TexBoxLabelStyle}" />
+                            <Image Source="{Binding ImageUrl}" Style="{StaticResource ImageStyel}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
+    </Grid>
+</Page>
